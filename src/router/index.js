@@ -15,7 +15,12 @@ const routes = [
     name: "about",
     component: () =>
       import("../views/AboutView.vue"),
-      meta: { noLogin: true }
+  },
+  {
+    path: "/socket",
+    name: "socket",
+    component: () =>
+      import("../views/Socket.vue"),
   },
 ];
 
