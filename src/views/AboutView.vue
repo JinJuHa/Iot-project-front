@@ -118,7 +118,7 @@ function frameAction() {
     drawLine();
     dino.draw();
     //BACK.draw();
-}
+} 
 
 document.addEventListener('keydown', (e)=>{
     if(e.code == 'Space'){
