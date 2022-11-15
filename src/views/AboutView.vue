@@ -17,7 +17,8 @@ export default {
   data(){
     return {
       dinoImg : require(`../../public/santa.png`),
-      treeImg : require(`../../public/santa.png`),
+      treeImg : require(`../../public/tree.png`),
+      backImg : require(`../../public/christmas.jpg`),
       NUM: localStorage.getItem('score')
     }
   },
@@ -27,7 +28,6 @@ let ctx = canvas.getContext('2d'); // context 란 뜻으로 ctx
 
 canvas.width = window.innerWidth - 100;
 canvas.height = window.innerHeight - 100;
-
 
 let dinoImg = new Image();
 dinoImg.src = 'santa.png';
@@ -58,6 +58,17 @@ class Cactus {
         ctx.drawImage(treeImg, this.x, this.y, this.width, this.height);
     }
 }
+
+
+// let img_two = new Image (); //이미지 객체 생성
+// img_two.src = 'christmas.jpg'; //code.jpg라는 이미지 파일을 로딩 시작
+// let BACK = {
+//     draw() {
+//         //이미지 비트맵에서 (30,30)을 중심으로 100*100 크기의 영역을
+//         ctx.drawImage (img_two,50,50);
+//         }
+// }
+
 
 let timer = 0;
 let cactusArr = [];
@@ -106,6 +117,7 @@ function frameAction() {
 
     drawLine();
     dino.draw();
+    //BACK.draw();
 }
 
 document.addEventListener('keydown', (e)=>{
