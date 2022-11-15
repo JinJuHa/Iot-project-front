@@ -1,8 +1,9 @@
 <template>
-  <div class="home">
-    <div v-if="gameState = 1">
+  <div class="about">
+    <div class="NUM">
       <span>목숨: <i id="life">5</i></span>
       <span style="margin-left: 10px;">점수: <i id="score">0</i></span>
+      <span v-if="NUM" style="margin-left: 10px;">이전 점수: <i id="backscore">{{ NUM }}</i></span>
     </div>
         <h2>스페이스를 눌러 게임을 시작</h2>
         <button class="logout" @click="Logout">로그아웃</button>
@@ -15,7 +16,9 @@
 export default {
   data(){
     return {
-      dinoImg : require(`../../public/dinosaur.png`),
+      dinoImg : require(`../../public/santa.png`),
+      treeImg : require(`../../public/santa.png`),
+      NUM: localStorage.getItem('score')
     }
   },
   mounted() {
@@ -27,7 +30,7 @@ canvas.height = window.innerHeight - 100;
 
 
 let dinoImg = new Image();
-dinoImg.src = 'dinosaur.png';
+dinoImg.src = 'santa.png';
 let dino = {
     x: 10,
     y: 200,
@@ -40,16 +43,19 @@ let dino = {
     }
 }
 
+let treeImg = new Image();
+treeImg.src = 'tree.png';
 class Cactus {
     constructor() {
-        this.width = 20 + getRandomInt(-3, 4);
-        this.height = 30 + getRandomInt(-3, 4);
+        this.width = 40 + getRandomInt(-3, 4);
+        this.height = 50 + getRandomInt(-3, 4);
         this.x = 500;
         this.y = 250 - this.height;
     }
     draw() {
-        ctx.fillStyle = 'red';
-        ctx.fillRect(this.x, this.y, this.width, this.height);
+        // ctx.fillStyle = 'red';
+        // ctx.fillRect(this.x, this.y, this.width, this.height);
+        ctx.drawImage(treeImg, this.x, this.y, this.width, this.height);
     }
 }
 
@@ -122,7 +128,8 @@ function collisionDetection(dino, cactus){
         life--;
         document.querySelector('#life').innerHTML = life;
         if(life == 0){
-            alert('게임오버');
+            localStorage.setItem("score", score)
+            alert('게임오버! 당신의 스코어는' + score + '점 입니다.');
             gameState = 0;
             cancelAnimationFrame(animation);
             // ctx.clearRect(0, 0, canvas.width, canvas.height); // 작동이 안되서 새로고침으로 대체
@@ -150,8 +157,14 @@ function drawLine(){
   methods: {
       Logout() {
       localStorage.removeItem('token')
+      localStorage.removeItem('score')
       this.$router.push('/')
     }
   }
 };
 </script>
+<style>
+.about {
+  margin-top: 75px;
+}
+</style>
