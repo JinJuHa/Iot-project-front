@@ -83,7 +83,6 @@ signInButton.addEventListener('click', () => {
             alert('이미 존재하는 아이디 입니다. 다시 입력해주세요!')
           } else if (code == 200) {
             alert('가입에 성공하셨습니다! 로그인 해주세요.')
-            this.$router.push({ path: '/' })
           } else {
             alert('가입에 실패했습니다. 다시 시도해주세요.')
             this.$router.go(0)
@@ -133,7 +132,6 @@ body {
 	flex-direction: column;
 	font-family: 'Montserrat', sans-serif;
 	height: 95vh;
-	margin: -20px 0 50px;
 }
 
 h1 {

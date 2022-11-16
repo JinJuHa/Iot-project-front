@@ -1,33 +1,85 @@
 <template>
   <div class="about">
     <div class="NUM">
-      <span>목숨: <i id="life">5</i></span>
-      <span style="margin-left: 10px;">점수: <i id="score">0</i></span>
-      <span v-if="NUM" style="margin-left: 10px;">이전 점수: <i id="backscore">{{ NUM }}</i></span>
+      <span class="MOC">목숨: <i id="life">5</i></span>
+      <span class="MOC" style="margin-left: 10px;">점수: <i id="score">0</i></span>
+      <span class="MOC" v-if="NUM" style="margin-left: 10px;">이전 점수: <i id="backscore">{{ NUM }}</i></span>
     </div>
+    <div>
         <h2>스페이스를 눌러 게임을 시작</h2>
         <button class="logout" @click="Logout">로그아웃</button>
         <canvas id="canvas"></canvas>
+        <!-- <img class="BACK" src="../../public/christmas.jpg" /> -->
+    </div>
   </div>
 </template>
 
 <script>
+import { io } from 'socket.io-client'
 
 export default {
   data(){
     return {
       dinoImg : require(`../../public/santa.png`),
       treeImg : require(`../../public/tree.png`),
-      backImg : require(`../../public/christmas.jpg`),
-      NUM: localStorage.getItem('score')
+      NUM: localStorage.getItem('score'),
+      socket: null,
+      final: 3 
     }
   },
-  mounted() {
+beforeMount() {
+    this.socket = io(
+      process.env.VUE_APP_URL + '/about',
+      {
+        cors: { origin: '*' }
+      }
+    )
+    let final2
+    this.socket.emit('my message', 'Hello there from Vue.');
+     this.socket.on('my broadcast', (data) => {
+        console.log(data);
+        final2 = data
+        this.final = data
+        // this.final = final2 
+        console.log(this.final);
+    });
+    console.log('확인용',final2);
+
+// console.log('확인용',final);
+    // this.socket.on('success', data => {
+    //     console.log(data)
+    // })
+
+  },
+
+  async mounted() {
+    console.log('######################3')
+    console.log(this.final)
+    console.log('파이널2',this.final)
+
 let canvas = document.querySelector('#canvas');
 let ctx = canvas.getContext('2d'); // context 란 뜻으로 ctx
 
 canvas.width = window.innerWidth - 100;
 canvas.height = window.innerHeight - 100;
+
+// let img_two
+// function IMG() {
+// img_two = new Image (); //이미지 객체 생성
+// img_two.src = 'christmas.jpg'; //code.jpg라는 이미지 파일을 로딩 시작
+// }
+
+// function LEN() {
+//     ctx.drawImage (img_two, 50,50, canvas.width, canvas.height);
+// }
+
+// function Main() {
+//     LEN()
+//     requestAnimationFrame(Main)
+// }
+
+// IMG()
+// Main()
 
 let dinoImg = new Image();
 dinoImg.src = 'santa.png';
@@ -58,16 +110,6 @@ class Cactus {
         ctx.drawImage(treeImg, this.x, this.y, this.width, this.height);
     }
 }
-
-
-// let img_two = new Image (); //이미지 객체 생성
-// img_two.src = 'christmas.jpg'; //code.jpg라는 이미지 파일을 로딩 시작
-// let BACK = {
-//     draw() {
-//         //이미지 비트맵에서 (30,30)을 중심으로 100*100 크기의 영역을
-//         ctx.drawImage (img_two,50,50);
-//         }
-// }
 
 
 let timer = 0;
@@ -107,6 +149,7 @@ function frameAction() {
     }
     if(jumpTimer > 50){
         jumpState = 0;
+        //this.final = 0;
         jumpTimer = 0;
     }
     if(jumpState == 0){
@@ -117,8 +160,24 @@ function frameAction() {
 
     drawLine();
     dino.draw();
-    //BACK.draw();
-} 
+}
+
+
+        // var timmer = setInterval(setTimer, 1000);
+        // setTimeout(stopTimer, 10000);
+        
+        // function setTimer() {
+        //     var n = 1;
+        //     //x = 0;
+        //     while (n > 0) {
+        //     console.log(n)
+        //     jumpState = n
+        //     break
+        //     }
+        // }
+        // function stopTimer() {
+        // clearInterval(timmer);
+        // }
 
 //점프하는구간
 document.addEventListener('keydown', (e)=>{
@@ -132,40 +191,14 @@ document.addEventListener('keydown', (e)=>{
         //     jumpState = 1; // 점프중으로 변경
         // }
         }
-        else if(gameState == 1){ // 게임실행중일때 스페이스누르면
-        var n = 1;
-            jumpState = n; // 점프중으로 변경
-        
-        var timer = setInterval(setTimer, 1000);
-        setTimeout(stopTimer, 10000);
-        
-        // function setTimer() {
-        //     var n = 1;
-        //     //x = 0;
-        //     while (n = 1) {
-        //     console.log(n)
-        //     break
-        //     }
+        // else if(gameState == 1){ // 게임실행중일때 스페이스누르면
+        //    jumpState = this.data; // 점프중으로 변경
         // }
-        
-        // function stopTimer() {
-        // clearInterval(timer);
-        // }
-        }
-        function setTimer() {
-            // var n = 1;
-            //x = 0;
-            while (n > 0) {
-            console.log(n)
-            break
-            }
-        }
-        
-        function stopTimer() {
-        clearInterval(timer);
-        }
 
 })
+
+console.log('파이널',this.final)
+
 
 function collisionDetection(dino, cactus){
     let xValue = cactus.x - ( dino.x + dino.width );
@@ -212,6 +245,24 @@ function drawLine(){
 </script>
 <style>
 .about {
-  margin-top: 75px;
+  width: 100%;
 }
+.BACK {
+    position: absolute;
+    width: 600px;
+    margin: 0px;
+    padding: 0px;
+    z-index: -1;
+}
+.MOC {
+    font-size: 20px;
+    font-weight: bold;
+}
+.logout {
+    margin-top: 10px;
+}
+/* #canvas {
+    position: absolute;
+    z-index: -1;
+} */
 </style>
