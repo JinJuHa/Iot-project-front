@@ -120,16 +120,51 @@ function frameAction() {
     //BACK.draw();
 } 
 
+//점프하는구간
 document.addEventListener('keydown', (e)=>{
     if(e.code == 'Space'){
         if(gameState == 0){
             gameState = 1; // 게임실행
             frameAction();
             document.querySelector('h2').style.display = 'none';
-        } else if(gameState == 1){ // 게임실행중일때 스페이스누르면
-            jumpState = 1; // 점프중으로 변경
+        } 
+        // else if(gameState == 1){ // 게임실행중일때 스페이스누르면
+        //     jumpState = 1; // 점프중으로 변경
+        // }
         }
-    }
+        else if(gameState == 1){ // 게임실행중일때 스페이스누르면
+        var n = 1;
+            jumpState = n; // 점프중으로 변경
+        
+        var timer = setInterval(setTimer, 1000);
+        setTimeout(stopTimer, 10000);
+        
+        // function setTimer() {
+        //     var n = 1;
+        //     //x = 0;
+        //     while (n = 1) {
+        //     console.log(n)
+        //     break
+        //     }
+        // }
+        
+        // function stopTimer() {
+        // clearInterval(timer);
+        // }
+        }
+        function setTimer() {
+            // var n = 1;
+            //x = 0;
+            while (n > 0) {
+            console.log(n)
+            break
+            }
+        }
+        
+        function stopTimer() {
+        clearInterval(timer);
+        }
+
 })
 
 function collisionDetection(dino, cactus){
