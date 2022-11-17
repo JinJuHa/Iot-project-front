@@ -27,7 +27,7 @@ export default {
       treeImg : require(`../../public/tree.png`),
       NUM: localStorage.getItem('score'),
       socket: null,
-      final: 3 
+      final: ''
     }
   },
 async created() {
@@ -156,21 +156,6 @@ function frameAction() {
 }
 
 
-        // var timmer = setInterval(setTimer, 2000);
-        // setTimeout(stopTimer, 15000);
-        
-        // function setTimer() {
-        //     var n = 1;
-        //     //x = 0;
-        //     while (n > 0) {
-        //     console.log(n)
-        //     jumpState = n
-        //     break
-        //     }
-        // }
-        // function stopTimer() {
-        // clearInterval(timmer);
-        // }
 
 //점프하는구간
 document.addEventListener('keydown', (e)=>{
@@ -180,14 +165,36 @@ document.addEventListener('keydown', (e)=>{
             frameAction();
             document.querySelector('h2').style.display = 'none';
             temp = soundCatch.data ;
-
         } 
-        else if(temp != soundCatch.data){ // 게임실행중일때 스페이스누르면
-             jumpState = 1;
-             temp = soundCatch.data ;
-         }
+        // else if(temp != soundCatch.data){ // 게임실행중일때 스페이스누르면
+        //      jumpState = 1;
+        //      temp = soundCatch.data ;
+        //  }
         }
 })
+
+FIRE()
+
+function FIRE(){
+        var timmer = setInterval(setTimer, 500);
+        setTimeout(stopTimer, 100000);
+        function setTimer() {
+            while (gameState == 1) {
+            if(temp != soundCatch.data){ // 게임실행중일때 스페이스누르면
+                    jumpState = 1;
+                    temp = soundCatch.data ;
+                }
+            // location.reload();
+            // frameAction();
+            break
+            }
+        }
+        function stopTimer() {
+        clearInterval(timmer);
+        }
+}
+
+
 
 
 function collisionDetection(dino, cactus){
