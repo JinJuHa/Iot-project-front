@@ -17,6 +17,9 @@
 <script>
 import { io } from 'socket.io-client'
 
+var soundCatch = {};
+soundCatch.data = 0; //네임스페이스 객체를 선언하여 전역 변수로
+
 export default {
   data(){
     return {
@@ -24,7 +27,7 @@ export default {
       treeImg : require(`../../public/tree.png`),
       NUM: localStorage.getItem('score'),
       socket: null,
-      final: ''
+      final: 3 
     }
   },
 async created() {
@@ -34,26 +37,19 @@ async created() {
         cors: { origin: '*' }
       }
     )
-    // let final2
+
     this.socket.emit('my message', 'Hello there from Vue.');
      this.socket.on('my broadcast', (data) => {
-        //console.log(data);
-        //final2 = data
+        console.log(data);
         this.final = data
-        // this.final = final2 
         console.log(this.final);
+        soundCatch.data++; 
     });
-    //console.log('확인용',final2);
-
-// console.log('확인용',final);
-    // this.socket.on('success', data => {
-    //     console.log(data)
-    // })
-
   },
 
  mounted() {
     
+
 let canvas = document.querySelector('#canvas');
 let ctx = canvas.getContext('2d'); // context 란 뜻으로 ctx
 
@@ -117,6 +113,7 @@ let jumpTimer = 0;
 let animation;
 let life = 5;
 let score = 0;
+let temp = 0; //eslint-disable-line no-unused-vars
 
 function frameAction() {
     animation = requestAnimationFrame(frameAction);
@@ -146,8 +143,6 @@ function frameAction() {
     }
     if(jumpTimer > 50){
         jumpState = 0;
-        // this.final = 0;
-        // console.log("돌림")
         jumpTimer = 0;
     }
     if(jumpState == 0){
@@ -161,43 +156,38 @@ function frameAction() {
 }
 
 
-        var timmer = setInterval(setTimer, 2000);
-        setTimeout(stopTimer, 15000);
+        // var timmer = setInterval(setTimer, 2000);
+        // setTimeout(stopTimer, 15000);
         
-        function setTimer() {
-            var n = 1;
-            //x = 0;
-            while (n > 0) {
-            //console.log(n)
-            jumpState = n
-            break
-            }
-        }
-        function stopTimer() {
-        clearInterval(timmer);
-        }
+        // function setTimer() {
+        //     var n = 1;
+        //     //x = 0;
+        //     while (n > 0) {
+        //     console.log(n)
+        //     jumpState = n
+        //     break
+        //     }
+        // }
+        // function stopTimer() {
+        // clearInterval(timmer);
+        // }
 
 //점프하는구간
-document.addEventListener('keypress', (e)=>{
-    if(e.code == 'Enter'){
-        console.log("눌려있음")
+document.addEventListener('keydown', (e)=>{
+    if(e.code == 'Space'){
         if(gameState == 0){
             gameState = 1; // 게임실행
             frameAction();
             document.querySelector('h2').style.display = 'none';
+            temp = soundCatch.data ;
+
         } 
-        else if(gameState == 1){ // 게임실행중일때 스페이스누르면
+        else if(temp != soundCatch.data){ // 게임실행중일때 스페이스누르면
              jumpState = 1;
-            //  console.log(this.final) // 점프중으로 변경
+             temp = soundCatch.data ;
          }
         }
-        // else if(gameState == 1){ // 게임실행중일때 스페이스누르면
-        //    jumpState = this.data; // 점프중으로 변경
-        // }
-
 })
-
-// console.log('파이널',this.final)
 
 
 function collisionDetection(dino, cactus){
@@ -212,7 +202,6 @@ function collisionDetection(dino, cactus){
             alert('게임오버! 당신의 스코어는' + score + '점 입니다.');
             gameState = 0;
             cancelAnimationFrame(animation);
-            // ctx.clearRect(0, 0, canvas.width, canvas.height); // 작동이 안되서 새로고침으로 대체
             location.reload();
         }
         return -1;
