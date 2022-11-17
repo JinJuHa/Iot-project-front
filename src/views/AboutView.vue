@@ -9,7 +9,7 @@
         <h2>스페이스를 눌러 게임을 시작</h2>
         <button class="logout" @click="Logout">로그아웃</button>
         <canvas id="canvas"></canvas>
-        <!-- <img class="BACK" src="../../public/christmas.jpg" /> -->
+        <img class="BACK" src="../../public/christmas.jpg" />
     </div>
   </div>
 </template>
@@ -155,15 +155,18 @@ function frameAction() {
     dino.draw();
 }
 
-
+document.querySelector('span').style.display = 'none';
+document.querySelector('img').style.display = 'none';
 
 //점프하는구간
 document.addEventListener('keydown', (e)=>{
     if(e.code == 'Space'){
         if(gameState == 0){
             gameState = 1; // 게임실행
+            document.querySelector('img').style.display = 'block';
             frameAction();
             document.querySelector('h2').style.display = 'none';
+            document.querySelector('span').style.display = 'block';
             temp = soundCatch.data ;
         } 
         // else if(temp != soundCatch.data){ // 게임실행중일때 스페이스누르면
@@ -246,7 +249,8 @@ function drawLine(){
 .BACK {
     position: absolute;
     width: 600px;
-    margin: 0px;
+    margin-top: 40px;
+    margin-left: 400px;
     padding: 0px;
     z-index: -1;
 }
@@ -257,8 +261,10 @@ function drawLine(){
 .logout {
     margin-top: 10px;
 }
-/* #canvas {
+#canvas {
     position: absolute;
-    z-index: -1;
-} */
+    margin-top: 88px;
+    margin-left: -353px;
+    z-index: 0;
+}
 </style>

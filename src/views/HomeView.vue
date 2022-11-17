@@ -123,9 +123,11 @@ signInButton.addEventListener('click', () => {
 * {
 	box-sizing: border-box;
 }
-
 body {
 	background: #f6f5f7;
+}
+
+.home {
 	display: flex;
 	justify-content: center;
 	align-items: center;
