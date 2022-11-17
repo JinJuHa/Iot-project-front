@@ -24,7 +24,7 @@ export default {
       treeImg : require(`../../public/tree.png`),
       NUM: localStorage.getItem('score'),
       socket: null,
-      final: 3 
+      final: ''
     }
   },
 async created() {
@@ -34,16 +34,16 @@ async created() {
         cors: { origin: '*' }
       }
     )
-    let final2
+    // let final2
     this.socket.emit('my message', 'Hello there from Vue.');
      this.socket.on('my broadcast', (data) => {
-        console.log(data);
-        final2 = data
+        //console.log(data);
+        //final2 = data
         this.final = data
         // this.final = final2 
         console.log(this.final);
     });
-    console.log('확인용',final2);
+    //console.log('확인용',final2);
 
 // console.log('확인용',final);
     // this.socket.on('success', data => {
@@ -54,7 +54,6 @@ async created() {
 
  mounted() {
     
-
 let canvas = document.querySelector('#canvas');
 let ctx = canvas.getContext('2d'); // context 란 뜻으로 ctx
 
@@ -169,7 +168,7 @@ function frameAction() {
             var n = 1;
             //x = 0;
             while (n > 0) {
-            console.log(n)
+            //console.log(n)
             jumpState = n
             break
             }
