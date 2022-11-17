@@ -27,7 +27,7 @@ export default {
       final: 3 
     }
   },
-beforeMount() {
+async created() {
     this.socket = io(
       process.env.VUE_APP_URL + '/about',
       {
@@ -52,10 +52,8 @@ beforeMount() {
 
   },
 
-  async mounted() {
-    console.log('######################3')
-    console.log(this.final)
-    console.log('파이널2',this.final)
+ mounted() {
+    
 
 let canvas = document.querySelector('#canvas');
 let ctx = canvas.getContext('2d'); // context 란 뜻으로 ctx
@@ -149,7 +147,8 @@ function frameAction() {
     }
     if(jumpTimer > 50){
         jumpState = 0;
-        //this.final = 0;
+        // this.final = 0;
+        // console.log("돌림")
         jumpTimer = 0;
     }
     if(jumpState == 0){
@@ -163,33 +162,35 @@ function frameAction() {
 }
 
 
-        // var timmer = setInterval(setTimer, 1000);
-        // setTimeout(stopTimer, 10000);
+        var timmer = setInterval(setTimer, 2000);
+        setTimeout(stopTimer, 15000);
         
-        // function setTimer() {
-        //     var n = 1;
-        //     //x = 0;
-        //     while (n > 0) {
-        //     console.log(n)
-        //     jumpState = n
-        //     break
-        //     }
-        // }
-        // function stopTimer() {
-        // clearInterval(timmer);
-        // }
+        function setTimer() {
+            var n = 1;
+            //x = 0;
+            while (n > 0) {
+            console.log(n)
+            jumpState = n
+            break
+            }
+        }
+        function stopTimer() {
+        clearInterval(timmer);
+        }
 
 //점프하는구간
-document.addEventListener('keydown', (e)=>{
-    if(e.code == 'Space'){
+document.addEventListener('keypress', (e)=>{
+    if(e.code == 'Enter'){
+        console.log("눌려있음")
         if(gameState == 0){
             gameState = 1; // 게임실행
             frameAction();
             document.querySelector('h2').style.display = 'none';
         } 
-        // else if(gameState == 1){ // 게임실행중일때 스페이스누르면
-        //     jumpState = 1; // 점프중으로 변경
-        // }
+        else if(gameState == 1){ // 게임실행중일때 스페이스누르면
+             jumpState = 1;
+            //  console.log(this.final) // 점프중으로 변경
+         }
         }
         // else if(gameState == 1){ // 게임실행중일때 스페이스누르면
         //    jumpState = this.data; // 점프중으로 변경
@@ -197,7 +198,7 @@ document.addEventListener('keydown', (e)=>{
 
 })
 
-console.log('파이널',this.final)
+// console.log('파이널',this.final)
 
 
 function collisionDetection(dino, cactus){
